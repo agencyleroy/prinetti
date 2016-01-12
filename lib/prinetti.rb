@@ -16,7 +16,7 @@ module Prinetti
 
   class Configuration
     attr_accessor :address_method, :customer_method, :debug, :account, :contract,
-                  :key, :sources, :sender_name, :sender_street, :sender_postcode,
+                  :key, :source, :sender_name, :sender_street, :sender_postcode,
                   :sender_city, :sender_country, :sender_phone, :sender_vatcode
   end
 
@@ -50,7 +50,7 @@ module Prinetti
     end
 
     def pdf_file
-      slef.call("file")
+      self.call("file")
     end
 
     def call(response_type="link")
@@ -85,7 +85,7 @@ module Prinetti
       end
 
       # Send request for pdf based on tracking code, returns response
-      pdf_response = if response_type = "file"
+      pdf_response = if response_type == "file"
         request_file(trackingcode, reference)
       else
         request_link(trackingcode, reference)
