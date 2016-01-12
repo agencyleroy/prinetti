@@ -96,7 +96,7 @@ module Prinetti
 
       if parsed_response["response.message"].eql?("OK")
         # Success
-        parsed_response["response.link"]
+        parsed_response["response.#{response_type}"]
       else
         # Failure
         raise StandardError, parsed_response["response.message"]
