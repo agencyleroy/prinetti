@@ -1,6 +1,8 @@
 Prinetti
 ================
 
+This gem is not yet completely finished so proceed at your own peril.
+
 Getting Started
 ---------------
 
