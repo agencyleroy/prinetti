@@ -45,11 +45,15 @@ module Prinetti
       @md5_key = md5_key(@account, @id, @key)
     end
 
-    def pdf_url
-      self.call
+    def pdf_link
+      self.call("link")
     end
 
-    def call
+    def pdf_file
+      slef.call("file")
+    end
+
+    def call(response_type="link")
       xml = {
         "ROUTING": authentication,
         Shipment: shipment
@@ -81,7 +85,11 @@ module Prinetti
       end
 
       # Send request for pdf based on tracking code, returns response
-      pdf_response = request_pdf(trackingcode, reference)
+      pdf_response = if response_type = "file"
+        request_file(trackingcode, reference)
+      else
+        request_link(trackingcode, reference)
+      end
 
       # Parse pdf response
       parsed_response = Parser.new(pdf_response, :xml).parse["Response"]

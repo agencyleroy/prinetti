@@ -42,9 +42,13 @@ Usage
 # Initialize a new prinetti instance
 prinetti = Prinetti::Label.new(order: Order.find(params[:id]))
 
-# Get the pdf url
-prinetti.pdf_url
+# Get the pdf link
+prinetti.pdf_link
 # => "https://echannel.prinetti.net/getPdf.php?key=bc15630115c6715de5426c36c04792b9"
+
+# Get the pdf file
+prinetti.pdf_file
+# => raw data
 ```
 
 Credits
