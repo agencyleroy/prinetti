@@ -95,7 +95,7 @@ module Prinetti
       end
     end
 
-    def request_pdf(trackingcode, reference)
+    def request_link(trackingcode, reference)
       xml = {
         "ROUTING": authentication,
         "PrintLabel": {
@@ -103,6 +103,24 @@ module Prinetti
           "TrackingCode": trackingcode
         }
       }.to_xml(root: "eChannel").sub("<PrintLabel>", "<PrintLabel responseFormat='link'>")
+
+      puts "\nSending: \n \n #{xml}" if @debug.eql?(true)
+
+      response = self.class.post(
+        '/returnPdf.php',
+        headers: {'Content-type' => 'text/xml'},
+        body: xml
+      )
+    end
+
+    def request_file(trackingcode, reference)
+      xml = {
+        "ROUTING": authentication,
+        "PrintLabel": {
+          "Reference": reference,
+          "TrackingCode": trackingcode
+        }
+      }.to_xml(root: "eChannel").sub("<PrintLabel>", "<PrintLabel responseFormat='File'>")
 
       puts "\nSending: \n \n #{xml}" if @debug.eql?(true)
 
@@ -136,10 +154,10 @@ module Prinetti
           "Sender.Contractid": @contract,
           "Sender.Name1": Prinetti.configuration.sender_name,
           "Sender.Addr1": Prinetti.configuration.sender_street,
-          "Sender.Postcode": Prinetti.configuration.sender_postcode, # TODO: Change
+          "Sender.Postcode": Prinetti.configuration.sender_postcode,
           "Sender.City": Prinetti.configuration.sender_city,
           "Sender.Country": Prinetti.configuration.sender_country,
-          "Sender.Phone": Prinetti.configuration.sender_phone, # TODO: Change
+          "Sender.Phone": Prinetti.configuration.sender_phone,
           "Sender.Vatcode": Prinetti.configuration.sender_vatcode
         },
         "Shipment.Recipient": {
@@ -162,17 +180,17 @@ module Prinetti
           "Consignment.Parcel": {
             "Parcel.Packagetype": "PC",
             "Parcel.Reference": @id,
-            # "Parcel.Weight": "0.1",
-            # "Parcel.Volumne": "0.1",
-            # "Parcel.Infocode": "12345",
-            "Parcel.Contents": "Nuotistoja"
+            "Parcel.Weight": nil,
+            "Parcel.Volumne": nil,
+            "Parcel.Infocode": nil,
+            "Parcel.Contents": nil
           }
         }
       }
     end
 
     def md5_key(account, id, key)
-      md5 = Digest::MD5.hexdigest "#{account}#{id}#{key}"
+      Digest::MD5.hexdigest "#{account}#{id}#{key}"
     end
   end
 end
