@@ -190,7 +190,6 @@ module Prinetti
             "Parcel.Reference": @id,
             "Parcel.Weight": nil,
             "Parcel.Volumne": nil,
-            "Parcel.Infocode": nil,
             "Parcel.Contents": nil
           }
         }
